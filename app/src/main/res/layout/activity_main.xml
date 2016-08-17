@@ -7,30 +7,54 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ui.MainActivity"
-    android:gravity="center">
-    <!-- <ToggleButton
-        android:id="@+id/btnBeep"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:textOn="@string/beep" 
-        android:textOff="@string/beep"
-        android:drawableRight="@mipmap/icon_on_off"
-        android:onClick="onClickBeep"
-        android:gravity="center"
-        android:textStyle="bold|italic"
-        android:textSize="28sp"
-        android:padding="5dp"
-        android:background="@mipmap/button_background"
-        android:textColor="@color/text_color"/>-->
-    <Button
-        android:id="@+id/btnTest"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="test"
-        android:layout_below="@+id/btnBeep"
-        android:onClick="onClick"
-        android:padding="5px"/>
+    android:background="@color/windowBackground">
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+        <TextSwitcher
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tsTimeToBeep"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp">
+
+        </TextSwitcher>
+
+        <Button
+            android:id="@+id/btnBeep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/beep"
+            android:onClick="onClick"
+            android:textColor="@color/windowBackground"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:background="@drawable/ripple_effect"
+            android:layout_below="@id/tsTimeToBeep"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgBtnSetting"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/action_settings"
+            android:src="@mipmap/settings"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:onClick="onClick"/>
+    </RelativeLayout>
 
 </RelativeLayout>

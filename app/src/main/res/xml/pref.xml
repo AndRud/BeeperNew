@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <EditTextPreference 
-        android:key="timeToBeep"
-        android:summary="Time to Beep, sec"
-        android:title="Time to Beep"
-        android:defaultValue="5"
+    <com.andrutyk.beeper.utils.IntEditTextPreference
+        android:key="@string/time_to_beep_key"
+        android:summary="@string/time_to_beep_summary"
+        android:title="@string/time_to_beep_title"
+        android:defaultValue="60"
         android:numeric="integer"/>
-	<EditTextPreference 
-        android:key="countBeep"
-        android:summary="Count Beep"
-        android:title="Count Beep"
+	<com.andrutyk.beeper.utils.IntEditTextPreference
+        android:key="@string/count_beep_key"
+        android:summary="@string/count_beep"
+        android:title="@string/count_beep"
         android:defaultValue="1"
         android:numeric="integer"/>	
 	<ListPreference 
 	    android:key="listSounds"
-	    android:summary="Choose sound of Beep"
-	    android:title="Sounds"/>
+	    android:summary="@string/sounds_summary"
+	    android:title="@string/sounds_title"/>
 </PreferenceScreen>

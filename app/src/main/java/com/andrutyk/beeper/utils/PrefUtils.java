@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
+import android.preference.PreferenceManager;
 
 /**
  * Created by admin on 28.07.2016.
@@ -17,8 +18,7 @@ public class PrefUtils {
     private final SharedPreferences prefs;
     private Editor editor;
 
-    public static final String PREF_FILE_DEFAULT = "com.andrutyk.beeper.utils";
-    public static final String PREF_SOUND_NAME = "sound_name";
+    public static final String PREF_SOUND_NAME = "listSounds";
     public static final String PREF_COUNT_BEEP = "countBeep";
     public static final String PREF_TIME_TO_BEEP = "timeToBeep";
 
@@ -29,8 +29,7 @@ public class PrefUtils {
      */
     public PrefUtils(Context context) {
         this.context = context;
-        prefs = context.getSharedPreferences(PREF_FILE_DEFAULT,
-                Context.MODE_PRIVATE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     Editor editor() {
