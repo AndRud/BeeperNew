@@ -1,60 +1,13 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainActivity"
-    android:background="@color/windowBackground">
+    android:orientation="horizontal">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
-
-        <TextSwitcher
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tsTimeToBeep"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="20dp">
-
-        </TextSwitcher>
-
-        <Button
-            android:id="@+id/btnBeep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/beep"
-            android:onClick="onClick"
-            android:textColor="@color/windowBackground"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp"
-            android:background="@drawable/ripple_effect"
-            android:layout_below="@id/tsTimeToBeep"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layoutSettings"
+    <FrameLayout
+        android:id="@+id/fragmentContent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imgBtnSetting"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="@string/action_settings"
-            android:src="@mipmap/settings"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:onClick="onClick"/>
-    </RelativeLayout>
-
-</RelativeLayout>
+        android:layout_height="match_parent">
+    </FrameLayout>
+</LinearLayout>
