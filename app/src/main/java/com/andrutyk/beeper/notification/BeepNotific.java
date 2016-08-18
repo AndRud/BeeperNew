@@ -39,6 +39,7 @@ public class BeepNotific {
                 .setSmallIcon(R.mipmap.notification)
                 .setColor(context.getResources().getColor(R.color.windowBackground))
                 .setLargeIcon(bitmap)
+                .setContentText(timeToBeep)
                 .setContentTitle(getStringRecource(R.string.app_name))
                 .setContentIntent(pendingIntent);
 

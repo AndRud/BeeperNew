@@ -99,6 +99,7 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
         if (taskBeep != null) taskBeep.cancel();
         cdtTimeToBeep.cancel();
         sendBroadcastUpdate(0);
+        beepNotific.cancelBeepNotific();
     }
 
     private int getResID(Context context, String folderName, String resName) {
@@ -123,6 +124,7 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
                     bi.putExtra(EXTRA_COUNTDOWN, getStringTimeToBeep(millisUntilFinished));
                 }
                 context.sendBroadcast(bi);
+                beepNotific.sendNotification(getStringTimeToBeep(millisUntilFinished));
             }
 
             @Override
@@ -150,7 +152,7 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
 
         try {
             timerBeep.schedule(taskBeep, 0, timeToBeep);
-            beepNotific.sendNotification("");
+            beepNotific.sendNotification("00:00:00");
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
