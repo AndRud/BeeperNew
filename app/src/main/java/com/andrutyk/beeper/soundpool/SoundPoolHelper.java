@@ -13,7 +13,11 @@ import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 
+import com.andrutyk.beeper.notification.BeepNotific;
 import com.andrutyk.beeper.utils.PrefUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,6 +61,8 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
     CountDownTimer cdtTimeToBeep = null;
     Vibrator vibrator;
 
+    private BeepNotific beepNotific;
+
     public SoundPoolHelper(Context context, OnLoadResourceCallBack onLoadResourceCallBack) {
         this.context = context;
         this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -64,6 +70,7 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
         timerBeep = new Timer();
         audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        beepNotific = new BeepNotific(context);
         createSoundPool();
     }
 
@@ -113,7 +120,7 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (millisUntilFinished < (millisUntilFinished + 1000) * 1000) {
-                    bi.putExtra(EXTRA_COUNTDOWN, millisUntilFinished);
+                    bi.putExtra(EXTRA_COUNTDOWN, getStringTimeToBeep(millisUntilFinished));
                 }
                 context.sendBroadcast(bi);
             }
@@ -135,24 +142,28 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
                 };
 
                 sendBroadcastUpdate(timeToBeep);
-
                 spBeep.play(soundID,  1.0f, 1.0f, 1, countBeep, 1f);
                 vibrate();
-
                 cdtTimeToBeep.start();
             }
         };
 
         try {
             timerBeep.schedule(taskBeep, 0, timeToBeep);
+            beepNotific.sendNotification("");
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
     }
 
     private void sendBroadcastUpdate(long timeToBeep) {
-        bi.putExtra(EXTRA_COUNTDOWN, timeToBeep);
+        bi.putExtra(EXTRA_COUNTDOWN, getStringTimeToBeep(timeToBeep));
         context.sendBroadcast(bi);
+    }
+
+    private String getStringTimeToBeep(long timeToBeep) {
+        DateTime dateTime = new DateTime(timeToBeep);
+        return dateTime.withZone(DateTimeZone.UTC).toString("HH:mm:ss");
     }
 
     private void vibrate() {

@@ -37,6 +37,8 @@ import org.joda.time.DateTimeZone;
 
 public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, View.OnClickListener{
 
+    private final static String DEF_TIME = "00:00:00";
+
     private ActivityManager manager;
 
     private TextSwitcher tsTimeToBeep;
@@ -45,7 +47,7 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
 
     SharedPreferences sharedPreferences;
 
-    private long timeToBeep;
+    private String timeToBeep;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         setRetainInstance(true);
-        timeToBeep = 0;
+        timeToBeep = DEF_TIME;
     }
 
     @Nullable
@@ -116,15 +118,13 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
     private BroadcastReceiver timeToBeepReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            timeToBeep = intent.getLongExtra(SoundPoolHelper.EXTRA_COUNTDOWN, 0);
+            timeToBeep = intent.getStringExtra(SoundPoolHelper.EXTRA_COUNTDOWN);
             setTextTimeToBeep(timeToBeep);
         }
     };
 
-    private void setTextTimeToBeep(long timeToBeep) {
-        DateTime dateTime = new DateTime(timeToBeep);
-        String time = dateTime.withZone(DateTimeZone.UTC).toString("HH:mm:ss");
-        tsTimeToBeep.setText(String.valueOf(time));
+    private void setTextTimeToBeep(String timeToBeep) {
+        tsTimeToBeep.setText(timeToBeep);
     }
 
     @Override
@@ -159,11 +159,11 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
         return textView;
     }
 
-    public void setTimeToBeep(long timeToBeep) {
+    public void setTimeToBeep(String timeToBeep) {
         this.timeToBeep = timeToBeep;
     }
 
-    public long getTimeToBeep() {
+    public String getTimeToBeep() {
         return timeToBeep;
     }
 }
