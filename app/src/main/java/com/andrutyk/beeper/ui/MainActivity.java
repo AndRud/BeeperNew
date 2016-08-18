@@ -9,14 +9,26 @@ import com.andrutyk.beeper.R;
 
 public class MainActivity extends AppCompatActivity{
 
+    private final static String FRAGMENT_TAG = "main_fragment";
+    private Fragment fragmentMain;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Fragment fragmentMain = new MainFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(R.id.fragmentContent, fragmentMain);
-        ft.commit();
+        addFragment();
+    }
+
+    private void addFragment() {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentMain = getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if (fragmentMain == null){
+            fragmentMain = new MainFragment();
+            fragmentTransaction.add(R.id.fragmentContent, fragmentMain, FRAGMENT_TAG);
+        } else {
+            fragmentTransaction.replace(R.id.fragmentContent, fragmentMain);
+        }
+        fragmentTransaction.commit();
     }
 }

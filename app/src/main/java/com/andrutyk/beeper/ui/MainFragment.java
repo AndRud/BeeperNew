@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -44,12 +45,16 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
 
     SharedPreferences sharedPreferences;
 
+    private long timeToBeep;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        setRetainInstance(true);
+        timeToBeep = 0;
     }
 
     @Nullable
@@ -101,20 +106,26 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
                 android.R.anim.fade_in);
         Animation outAnimation = AnimationUtils.loadAnimation(getActivity(),
                 android.R.anim.fade_out);
-        tsTimeToBeep.setInAnimation(inAnimation);
-        tsTimeToBeep.setOutAnimation(outAnimation);
-        tsTimeToBeep.setText("00:00:00");
+        if (tsTimeToBeep != null) {
+            tsTimeToBeep.setInAnimation(inAnimation);
+            tsTimeToBeep.setOutAnimation(outAnimation);
+            setTextTimeToBeep(timeToBeep);
+        }
     }
 
     private BroadcastReceiver timeToBeepReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            long timeToBeep = intent.getLongExtra(SoundPoolHelper.EXTRA_COUNTDOWN, 0);
-            DateTime dateTime = new DateTime(timeToBeep);
-            String time = dateTime.withZone(DateTimeZone.UTC).toString("HH:mm:ss");
-            tsTimeToBeep.setText(String.valueOf(time));
+            timeToBeep = intent.getLongExtra(SoundPoolHelper.EXTRA_COUNTDOWN, 0);
+            setTextTimeToBeep(timeToBeep);
         }
     };
+
+    private void setTextTimeToBeep(long timeToBeep) {
+        DateTime dateTime = new DateTime(timeToBeep);
+        String time = dateTime.withZone(DateTimeZone.UTC).toString("HH:mm:ss");
+        tsTimeToBeep.setText(String.valueOf(time));
+    }
 
     @Override
     public void onResume() {
@@ -142,8 +153,17 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
     public View makeView() {
         TextView textView = new TextView(getActivity());
         textView.setGravity(Gravity.CENTER | Gravity.CENTER_HORIZONTAL);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 80);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 64);
+        textView.setTypeface(null, Typeface.BOLD);
         textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.btnBackgroundColor));
         return textView;
+    }
+
+    public void setTimeToBeep(long timeToBeep) {
+        this.timeToBeep = timeToBeep;
+    }
+
+    public long getTimeToBeep() {
+        return timeToBeep;
     }
 }

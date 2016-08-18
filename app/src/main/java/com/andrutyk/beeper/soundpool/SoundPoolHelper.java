@@ -10,6 +10,7 @@ import android.media.SoundPool;
 import android.media.SoundPool.OnLoadCompleteListener;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 
 import com.andrutyk.beeper.utils.PrefUtils;
@@ -29,10 +30,12 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
 
     private static final String SOURCE_FOLDER_NAME = "raw";
     private static final String DEF_SOUND_NAME = "hangouts_message";
+    private static final long VIBRATE_LENGTH = 500;
 
     public static final String PREF_SOUND_NAME = "listSounds";
     public static final String PREF_COUNT_BEEP = "countBeep";
     public static final String PREF_TIME_TO_BEEP = "timeToBeep";
+    public static final String PREF_VIBRATE_KEY = "vibrateKey";
 
     private SoundPool spBeep;
     private int soundID;
@@ -52,6 +55,7 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
 
     Intent bi = new Intent(COUNTDOWN_BR);
     CountDownTimer cdtTimeToBeep = null;
+    Vibrator vibrator;
 
     public SoundPoolHelper(Context context, OnLoadResourceCallBack onLoadResourceCallBack) {
         this.context = context;
@@ -59,6 +63,7 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
         this.onLoadResourceCallBack = onLoadResourceCallBack;
         timerBeep = new Timer();
         audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         createSoundPool();
     }
 
@@ -86,8 +91,7 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
         timerBeep.cancel();
         if (taskBeep != null) taskBeep.cancel();
         cdtTimeToBeep.cancel();
-        bi.putExtra(EXTRA_COUNTDOWN, 0);
-        context.sendBroadcast(bi);
+        sendBroadcastUpdate(0);
     }
 
     private int getResID(Context context, String folderName, String resName) {
@@ -130,10 +134,10 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
                     countBeep = 0;
                 };
 
-                bi.putExtra(EXTRA_COUNTDOWN, timeToBeep);
-                context.sendBroadcast(bi);
+                sendBroadcastUpdate(timeToBeep);
 
                 spBeep.play(soundID,  1.0f, 1.0f, 1, countBeep, 1f);
+                vibrate();
 
                 cdtTimeToBeep.start();
             }
@@ -143,6 +147,17 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
             timerBeep.schedule(taskBeep, 0, timeToBeep);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void sendBroadcastUpdate(long timeToBeep) {
+        bi.putExtra(EXTRA_COUNTDOWN, timeToBeep);
+        context.sendBroadcast(bi);
+    }
+
+    private void vibrate() {
+        if (prefs.getBoolean(PREF_VIBRATE_KEY, true)) {
+            vibrator.vibrate(VIBRATE_LENGTH);
         }
     }
 

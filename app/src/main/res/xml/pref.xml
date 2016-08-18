@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <com.andrutyk.beeper.utils.IntEditTextPreference
-        android:key="@string/time_to_beep_key"
-        android:summary="@string/time_to_beep_summary"
-        android:title="@string/time_to_beep_title"
-        android:defaultValue="60"
-        android:numeric="integer"/>
-	<com.andrutyk.beeper.utils.IntEditTextPreference
-        android:key="@string/count_beep_key"
-        android:summary="@string/count_beep"
-        android:title="@string/count_beep"
-        android:defaultValue="1"
-        android:numeric="integer"/>	
-	<ListPreference 
-	    android:key="listSounds"
-	    android:summary="@string/sounds_summary"
-	    android:title="@string/sounds_title"/>
+	<PreferenceCategory
+		android:title="@string/category_sound_title"/>
+		<com.andrutyk.beeper.utils.IntEditTextPreference
+			android:key="@string/time_to_beep_key"
+			android:summary="@string/time_to_beep_summary"
+			android:title="@string/time_to_beep_title"
+			android:defaultValue="60"
+			android:numeric="integer"/>
+		<com.andrutyk.beeper.utils.IntEditTextPreference
+			android:key="@string/count_beep_key"
+			android:summary="@string/count_beep"
+			android:title="@string/count_beep"
+			android:defaultValue="1"
+			android:numeric="integer"/>
+		<ListPreference
+			android:key="listSounds"
+			android:summary="@string/sounds_summary"
+			android:title="@string/sounds_title"/>
+	<PreferenceCategory/>
+
+	<PreferenceCategory
+		android:title="@string/category_vibration_title"/>
+		<CheckBoxPreference android:key="@string/vibrate_key"
+			android:title="@string/vibrate_title"
+			android:summary="@string/vibrate_summary"
+			android:defaultValue="true"/>
+	<PreferenceCategory/>
 </PreferenceScreen>
