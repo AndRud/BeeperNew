@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.andrutyk.beeper.R;
+import com.andrutyk.beeper.service.BeeperService;
 import com.andrutyk.beeper.ui.MainActivity;
 
 /**
@@ -34,14 +35,21 @@ public class BeepNotific {
         PendingIntent pendingIntent = PendingIntent.getActivity(context,
                 0, intent, 0);
 
+        Intent intentStopBeep = new Intent(context, BeeperService.class);
+        intentStopBeep.setAction(BeeperService.ACTION_STOP);
+        PendingIntent pendingIntentStopBeep = PendingIntent.getService(context,
+                0, intentStopBeep, 0);
+
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.notification)
                 .setColor(context.getResources().getColor(R.color.windowBackground))
                 .setLargeIcon(bitmap)
-                .setContentText(timeToBeep)
+                .setContentText(getStringRecource(R.string.notification_content) + " " + timeToBeep)
                 .setContentTitle(getStringRecource(R.string.app_name))
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .addAction(R.mipmap.stop_beep,
+                        getStringRecource(R.string.notification_action_stop), pendingIntentStopBeep);
 
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_NO_CLEAR;

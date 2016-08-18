@@ -28,6 +28,9 @@
     <string name="vibrate_title">Vibrate</string>
     <string name="vibrate_summary">Enable vibration</string>
 
+    <string name="notification_content">Time to beep: </string>
+    <string name="notification_action_stop">Stop Beep</string>
+
     <string name="time_to_beep_invalid">Invalid value!</string>
 
 </resources>

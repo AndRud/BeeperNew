@@ -80,9 +80,11 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
         switch (view.getId()) {
             case (R.id.btnBeep):
                 if (!isBeepServiceRunning(BeeperService.class, manager)) {
-                    getActivity().startService(new Intent(getActivity(), BeeperService.class));
+                    getActivity().startService(new Intent(getActivity(), BeeperService.class)
+                            .setAction(BeeperService.ACTION_START));
                 } else {
-                    getActivity().stopService(new Intent(getActivity(), BeeperService.class));
+                    getActivity().stopService(new Intent(getActivity(), BeeperService.class)
+                            .setAction(BeeperService.ACTION_STOP));
                 }
                 break;
             case (R.id.imgBtnSetting):
@@ -108,11 +110,10 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
                 android.R.anim.fade_in);
         Animation outAnimation = AnimationUtils.loadAnimation(getActivity(),
                 android.R.anim.fade_out);
-        if (tsTimeToBeep != null) {
-            tsTimeToBeep.setInAnimation(inAnimation);
-            tsTimeToBeep.setOutAnimation(outAnimation);
-            setTextTimeToBeep(timeToBeep);
-        }
+
+        tsTimeToBeep.setInAnimation(inAnimation);
+        tsTimeToBeep.setOutAnimation(outAnimation);
+        setTextTimeToBeep(timeToBeep);
     }
 
     private BroadcastReceiver timeToBeepReceiver = new BroadcastReceiver() {

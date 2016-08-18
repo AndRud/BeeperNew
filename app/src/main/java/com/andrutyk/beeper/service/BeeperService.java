@@ -31,6 +31,9 @@ public class BeeperService extends Service implements OnLoadResourceCallBack {
 
     private final static String BEEP_WAKE_LOCK = "BeepWakeLock";
 
+    public final static String ACTION_STOP = "action_stop";
+    public final static String ACTION_START = "action_start";
+
     private SoundPoolHelper soundPoolHelper;
 
     private WakeLock wakeLock;
@@ -38,13 +41,28 @@ public class BeeperService extends Service implements OnLoadResourceCallBack {
     @Override
     public void onCreate() {
         super.onCreate();
-        initWkeLock();
+        initWakeLock();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        soundPoolHelper = new SoundPoolHelper(getBaseContext(), this);
-        soundPoolHelper.loadSource();
+        String action = intent.getAction();
+        if (action == null) {
+            action = ACTION_START;
+        }
+
+        switch (action){
+            case (ACTION_START):
+                soundPoolHelper = new SoundPoolHelper(getBaseContext(), this);
+                soundPoolHelper.loadSource();
+                break;
+            case (ACTION_STOP):
+                stopSelf();
+                break;
+            default:
+                break;
+        }
+
         return START_STICKY;
     }
 
@@ -71,7 +89,7 @@ public class BeeperService extends Service implements OnLoadResourceCallBack {
         }
     }
 
-    private void initWkeLock() {
+    private void initWakeLock() {
         PowerManager powerManager = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, BEEP_WAKE_LOCK);
         wakeLock.acquire();
