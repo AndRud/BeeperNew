@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.andrutyk.beeper.R;
+import com.flurry.android.FlurryAgent;
 
 public class MainActivity extends AppCompatActivity{
 
     private final static String FRAGMENT_TAG = "main_fragment";
+    private final static String FLURRY_API_KEY = "8H9MT5PC4W6MQBQGTZWD";
+
     private Fragment fragmentMain;
 
     @Override
@@ -17,6 +20,8 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FlurryAgent.setLogEnabled(false);
+        FlurryAgent.init(this, FLURRY_API_KEY);
         addFragment();
     }
 
