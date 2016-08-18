@@ -96,8 +96,15 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
 
     public void cancelBeep() {
         timerBeep.cancel();
-        if (taskBeep != null) taskBeep.cancel();
-        cdtTimeToBeep.cancel();
+
+        if (taskBeep != null) {
+            taskBeep.cancel();
+        }
+
+        if (cdtTimeToBeep != null) {
+            cdtTimeToBeep.cancel();
+        }
+
         sendBroadcastUpdate(0);
         beepNotific.cancelBeepNotific();
     }
@@ -116,7 +123,23 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
 
         final long timeToBeep = prefs.getInt(SoundPoolHelper.PREF_TIME_TO_BEEP,
                 SoundPoolHelper.DEF_TIME_TO_BEEP) * 1000;
-        cdtTimeToBeep = new CountDownTimer(timeToBeep + 1000, 1000) {
+
+        cdtTimeToBeep = getCdtTimeToBeep(timeToBeep);
+
+        taskBeep = getTaskBeep(timeToBeep);
+
+        try {
+            timerBeep.schedule(taskBeep, 0, timeToBeep);
+            beepNotific.sendNotification("00:00:00");
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private CountDownTimer getCdtTimeToBeep(long timeToBeep) {
+        return new CountDownTimer(timeToBeep + 1000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -128,12 +151,12 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
             }
 
             @Override
-            public void onFinish() {
-
-            }
+            public void onFinish() {}
         };
+    }
 
-        taskBeep = new TimerTask() {
+    private TimerTask getTaskBeep(final long timeToBeep) {
+        return new TimerTask() {
 
             @Override
             public void run() {
@@ -150,12 +173,6 @@ public class SoundPoolHelper implements OnLoadCompleteListener {
             }
         };
 
-        try {
-            timerBeep.schedule(taskBeep, 0, timeToBeep);
-            beepNotific.sendNotification("00:00:00");
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
     }
 
     private void sendBroadcastUpdate(long timeToBeep) {
