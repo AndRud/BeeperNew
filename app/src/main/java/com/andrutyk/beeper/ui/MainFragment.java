@@ -95,7 +95,6 @@ public class MainFragment extends Fragment implements TextSwitcher.ViewFactory, 
         }
     }
 
-
     private static boolean isBeepServiceRunning(Class<?> serviceClass, ActivityManager manager){
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
             if(serviceClass.getName().equals(service.service.getClassName())){

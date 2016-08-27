@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 	<PreferenceCategory
-		android:title="@string/category_sound_title"/>
+		android:title="@string/category_sound_title">
 		<com.andrutyk.beeper.utils.IntEditTextPreference
 			android:key="@string/time_to_beep_key"
 			android:summary="@string/time_to_beep_summary"
@@ -18,7 +18,7 @@
 			android:key="listSounds"
 			android:summary="@string/sounds_summary"
 			android:title="@string/sounds_title"/>
-	<PreferenceCategory/>
+	</PreferenceCategory>
 
 	<PreferenceCategory
 		android:title="@string/category_vibration_title"/>
